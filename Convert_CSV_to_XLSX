@@ -1,11 +1,12 @@
 import pandas as pd
 import glob
 from pathlib import Path
-
+#csv_folder is the "input" folder, xlsx_folder is the "output" folder
 csv_folder = "D:\\DATA_PROJECTS\\DATA\\CSV_FILES\\"
 xlsx_folder = "D:\\DATA_PROJECTS\\DATA\\XLSX_FILES\\"
+#the below adds all .csv files in the csv_folder to a list
 files = glob.glob(f"{csv_folder}*.csv")
-print(f"files: {files}")
+#the below for loop converts each .csv file to .xlsx in sequence
 for file in files:
     filename = Path(file).stem
     print(f"filename: {filename}")
