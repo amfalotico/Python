@@ -1,0 +1,47 @@
+#This python script, which was adapted from the script written by John McNamara (who wrote xlsxwriter), extracts the .bin file from an xlsm file
+
+from zipfile import ZipFile
+from zipfile import BadZipFile
+
+def extract_file(xlsm_zip, filename):
+    # The following extracts a single file from an .xlsm macro file
+    data = xlsm_zip.read("xl/"+filename)
+    #the below writes the data to a local file
+    file = open(filename, "wb")
+    file.write(data)
+    file.close()
+
+#This is the VBA project file and project signature file we want to extract
+vba_filename = "vbaProject.bin"
+vba_signature_filename = "vbaProjectSignature.bin"
+
+#This gets the xlsm filename that you want to extract the .bin file from
+xlsm_file = "D:\\DATA_PROJECTS\\DATA\\XLSM_FILES\\EXAMPLE_XLSM_FILE.xlsm"
+
+try:
+    #Open the xlsm file as a zip file
+    xlsm_zip = ZipFile(xlsm_file, "r")
+
+    #read the xl/vbaProject.bin file
+    extract_file(xlsm_zip, vba_filename)
+    print("extracted .bin file")
+    if "xl/" + vba_signature_filename in xlsm_zip.namelist():
+        extract_file(xlsm_zip, vba_signature_filename)
+        print("extracted signature.bin file")
+except IOError as e:
+    print("File error: %s" % str(e))
+    exit()
+except KeyError as e:
+    #this will usually happen when there isn't a xl/vbaProject.bin member in the file
+    print("File error: %s" % str(e))
+    print("File may not be an XLSM macro file: '%s'" % xlsm_file)
+    exit()
+except BadZipFile as e:
+    #This will usually happen if the file is an .xls file instead of an .xlsm file
+    print("File error: %s '%s'" % (str(e), xlsm_file))
+    print("FIle may not be an XLSM file")
+    exit()
+except Exception as e:
+    #for any other exceptions
+    print("Fiel error: %s" %str(e))
+    exit()
