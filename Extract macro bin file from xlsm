@@ -1,5 +1,5 @@
 #This python script, which was adapted from the script written by John McNamara (who wrote xlsxwriter), extracts the .bin file from an xlsm file
-
+#Once the bin file is extracted from an XLSM file, it can be used to automatically create other XLSM files with the same macros
 from zipfile import ZipFile
 from zipfile import BadZipFile
 
